@@ -77,7 +77,7 @@ main(int argc, char const *argv[])
     }
 
     printf("File copied correctly\n");
-    printf("Number of bytes copies %d\n", sum);
+    printf("Number of bytes copied %d\n", sum);
 
     close(inFileStream);
     close(outFileStream);
