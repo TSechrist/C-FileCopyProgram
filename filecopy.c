@@ -23,9 +23,9 @@ main(int argc, char const *argv[])
 
     printf("Welcome to the File Copy Program by Thomas Sechrist!\n");
     printf("Enter the name of the file to copy from:");
-    scanf("%s", outFileName);
-    printf("Enter the name of the file to copy to: ");
     scanf("%s", inFileName);
+    printf("Enter the name of the file to copy to: ");
+    scanf("%s", outFileName);
 
     int inFileStream = open(inFileName, O_RDONLY);
     int outFileStream = open(outFileName, O_WRONLY);
