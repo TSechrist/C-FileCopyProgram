@@ -20,8 +20,6 @@ main(int argc, char const *argv[])
 
     char outFileName[255];
     char inFileName[255];
-    int outFileStream;
-    int inFileStream;
 
     printf("Welcome to the File Copy Program by Thomas Sechrist!\n");
     printf("Enter the name of the file to copy from:");
@@ -29,18 +27,26 @@ main(int argc, char const *argv[])
     printf("Enter the name of the file to copy to: ");
     scanf("%s", inFileName);
 
-    if (inFileStream = open(inFileName, O_RDONLY) > 0)
+    int inFileStream = open(inFileName, O_RDONLY);
+    int outFileStream = open(outFileName, O_WRONLY);
+
+    if (inFileStream < 0)
     {
         perror("***READ FILE ERROR***");
         return -42;
     }
 
-    if (outFileStream = open(outFileName, O_WRONLY))
+    if (outFileStream < 0)
     {
-        close( inFileStream);
+        close(inFileStream);
         perror("***WRITE FILE ERROR***");
         return -42;
     }
+
+    printf("Both files opened correctly\n");
+
+    close(inFileStream);
+    close(outFileStream);
 
     return 0;
 }
