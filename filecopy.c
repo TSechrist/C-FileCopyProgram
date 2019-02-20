@@ -18,15 +18,29 @@ int
 main(int argc, char const *argv[])
 {
 
-    char fromFile[255];
-    char toFile[255];
+    char outFileName[255];
+    char inFileName[255];
+    int outFileStream;
+    int inFileStream;
 
     printf("Welcome to the File Copy Program by Thomas Sechrist!\n");
     printf("Enter the name of the file to copy from:");
-    scanf("%s", fromFile);
+    scanf("%s", outFileName);
     printf("Enter the name of the file to copy to: ");
-    scanf("%s", toFile);
-    
+    scanf("%s", inFileName);
+
+    if (inFileStream = open(inFileName, O_RDONLY) > 0)
+    {
+        perror("***READ FILE ERROR***");
+        return -42;
+    }
+
+    if (outFileStream = open(outFileName, O_WRONLY))
+    {
+        close( inFileStream);
+        perror("***WRITE FILE ERROR***");
+        return -42;
+    }
 
     return 0;
 }
