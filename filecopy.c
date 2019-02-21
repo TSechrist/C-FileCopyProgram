@@ -20,6 +20,8 @@ main(int argc, char const *argv[])
 
     char outFileName[255];
     char inFileName[255];
+    char bufferRead[BUFF_MAX];
+    int sum = 0;
 
     printf("Welcome to the File Copy Program by Thomas Sechrist!\n");
     printf("Enter the name of the file to copy from:");
@@ -28,22 +30,54 @@ main(int argc, char const *argv[])
     scanf("%s", outFileName);
 
     int inFileStream = open(inFileName, O_RDONLY);
-    int outFileStream = open(outFileName, O_WRONLY);
+    int outFileStream = open(outFileName, O_WRONLY | O_CREAT, 0666);
+    ssize_t bufferReadSum;
 
+    //If inFileStream isn't a readable file
     if (inFileStream < 0)
     {
+        close(inFileStream);
+        close(outFileStream);
         perror("***READ FILE ERROR***");
         return -42;
     }
 
+    //If outFileStream isn't a real file or newly created file
     if (outFileStream < 0)
     {
         close(inFileStream);
+        close(outFileStream);
         perror("***WRITE FILE ERROR***");
         return -42;
     }
 
     printf("Both files opened correctly\n");
+
+    for (bufferReadSum = read(inFileStream, bufferRead, BUFF_MAX);
+    bufferReadSum > 0; bufferReadSum = read(inFileStream, bufferRead, BUFF_MAX))
+    {
+        //This check is for newlines, to make sure it is not skipping empty lines
+        if(bufferReadSum != write(outFileStream, bufferRead, (size_t)bufferReadSum))
+        {
+            close(inFileStream);
+            close(outFileStream);
+            perror("***COPY FILE ERROR***");
+            return -42;
+        }
+        sum = sum + (size_t)bufferReadSum;
+    }
+
+    //Test to see if read returned -1
+    if (bufferReadSum < 0)
+    {
+        close(inFileStream);
+        close(outFileStream);
+        perror("***FILE READ ERROR***");
+        return -42;
+    }
+
+    printf("File copied correctly\n");
+    printf("Number of bytes copies %d\n", sum);
 
     close(inFileStream);
     close(outFileStream);
