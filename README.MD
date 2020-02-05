@@ -1,8 +1,6 @@
-# CSC 415 - Project 2 - File copy
+# CSC 415 - File copy
 
 ## Student Name : Thomas Sechrist
-
-## Student ID   : 918679091
 
 ## Build Instructions
 Used MakeFile to create a program named fc. 
